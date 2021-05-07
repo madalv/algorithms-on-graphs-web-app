@@ -1,112 +1,137 @@
 /* Main Styleing */
+
 body {
-  font-family: "Roboto";
-  text-align: left;
-  line-height: 2;
-  background-color: #000000;
-  color: #fff;
+    font-family: "Roboto";
+    text-align: left;
+    line-height: 2;
+    background-color: #000000;
+    color: #fff;
 }
 
 section {
-  padding: 2% 7% 0;
+    padding: 2% 7% 0;
 }
 
 .btn {
-  margin: 5% 0;
-  font-weight: 600;
+    margin: 5% 0;
+    font-weight: 600;
 }
 
+
 /* Title Section */
+
 h1 {
-  font-family: "Montserrat";
-  font-weight: 700;
-  text-align: center;
-  color: #ffb546;
+    font-family: "Montserrat";
+    font-weight: 700;
+    text-align: center;
+    color: #ffb546;
 }
+
 img {
-  display: block;
-  margin-left: 0;
-  margin-right: auto;
-  margin-bottom: 30px;
+    display: block;
+    margin-left: 0;
+    margin-right: auto;
+    margin-bottom: 30px;
 }
+
 @media all and (max-width: 1024px) {
-  img {
-    margin-left: auto;
-  }
+    img {
+        margin-left: auto;
+    }
 }
 
 #result {
-  font-family: "Montserrat";
-  font-size: x-large;
-  font-weight: 500;
-  text-align: center;
-  color: #ffb546;
+    font-family: "Montserrat";
+    font-size: x-large;
+    font-weight: 500;
+    text-align: center;
+    color: #ffb546;
 }
+
 
 /* Footer Section */
+
 #footer {
-  padding: 2% 0 1%;
-  text-align: center;
+    padding: 2% 0 1%;
+    text-align: center;
 }
+
 
 /* Frorm */
+
 .form-signin {
-  width: 100%;
-  max-width: 330px;
+    width: 100%;
+    max-width: 330px;
 }
+
 .form-signin .form-control {
-  position: relative;
-  box-sizing: border-box;
-  height: auto;
-  padding: 10px;
-  font-size: 16px;
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
 }
+
 .form-signin .form-control:focus {
-  z-index: 2;
+    z-index: 2;
 }
+
 .top {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
+
 .bottom {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
-/*Tabs + tab buttons + drop down menu*/ 
-.nav{
-  background-color: #FFC107;
-  border-radius: 5px;
-}
-.nav-item{
-  padding-top: 10px;
-  padding-bottom: 10px;
-  color: black;
-  
-  font-weight: 600;
-  text-align: center;
-}
-.nav-item:hover{
-  background-color: #daa402;
-  cursor: pointer;
-  border-radius: 5px;
+
+/*Tabs + tab buttons + drop down menu*/
+
+.nav {
+    background-color: #FFC107;
+    border-radius: 5px;
 }
 
-.dropdown-menu{
-  background-color: rgb(243, 231, 166);
-  width: 100%;
-  text-align: left;
-  
-  position: relative;
- 
+.nav-item {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: black;
+    font-weight: 600;
+    text-align: center;
 }
 
-.dropdown-item:hover{
-  background-color: rgb(235, 204, 122);
+.nav-item:hover {
+    background-color: #daa402;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-a.nav-link{
-  color: black;
+.dropdown-menu {
+    background-color: rgb(243, 231, 166);
+    text-align: left;
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-width: 178px;
+}
+
+.dropdown-item:hover {
+    background-color: rgb(235, 204, 122);
+}
+
+a.nav-link {
+    color: black;
+}
+
+.dropdown-divider {
+    border-color: black;
+}
+
+#inputLinkColor,
+#inputNodeColor {
+    resize: none;
 }

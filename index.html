@@ -1,155 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="shortcut icon" type="image/png" href="images/graph.png" />
     <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Roboto:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
 
     <title>Graph Algorithms</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <section>
-      <div class="row" width="1500px">
-        <div class="col-2">
-          <img src="images/faf.png" height="72px" />
+        <div class="row" width="1500px">
+            <div class="col-2">
+                <img src="images/faf.png" height="72px" />
+            </div>
+            <div class="col-3">
+                <h1>Graph Algorithms</h1>
+            </div>
+            <div class="col-7">
+                <ul class="nav nav-fill">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">Algorithms on Directed Graphs</a>
+                        <div class="dropdown-menu">
+                            <button id="maxFlowBtn" class="dropdown-item "> Max Flow </button>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">Algorithms on Undirected Graphs</a>
+                        <div class="dropdown-menu">
+                            <button id="shortPathBtn" class="dropdown-item "> Shortest Path </button>
+                            <button id="minTreeBtn" class="dropdown-item "> Minimum Spanning Tree </button>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">Colors</a>
+                        <div class="dropdown-menu row">
+                            <ul class="list-unstyled col-12">
+                                <li data-toggle="tooltip" title="Type your favorite color or a hex code!">Custom Link Color:</li>
+                                <textarea id="inputLinkColor" rows="1" cols="15">yellow</textarea>
+                            </ul>
+                            <div class="dropdown-divider"></div>
+                            <ul class="list-unstyled col-12">
+                                <li data-toggle="tooltip" title="Type your favorite color or hex code! Pss, try putting a number from 0 to 4 and see what happens!">Custom Node Color:</li>
+                                <textarea id="inputNodeColor" rows="1" cols="15">0</textarea>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item ">
+                        <a href="https://github.com/madalv/algorithms-on-graphs-web-app/blob/main/README.md" class="nav-link">Help</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="col-3">
-          <h1>Graph Algorithms</h1>
         </div>
-        <div class="col-7">
-          <ul class="nav nav-fill">
-            <li  class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown">Algorithms on Directed Graphs</a>
-              <div class="dropdown-menu">
-                <button id="maxFlowBtn" class="dropdown-item "> Max Flow </button>
-              </div>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown">Algorithms on Undirected Graphs</a>
-              <div class="dropdown-menu">
-                <button id="shortPathBtn" class="dropdown-item "> Shortest Path </button>
-                <button id="minTreeBtn" class="dropdown-item "> Minimum Spanning Tree </button>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a href="" class="nav-link">Colors</a>
-            </li>
-            <li class="nav-item ">
-              <a href="" class="nav-link">Help</a>
-            </li>
-          </ul>
-          </div>
-        </div>
-      </div>
 
-    
 
-      <svg id="svgID" width="800" height="400"></svg>
 
-      <form>
-        <div class="row">
-          <div class="col-lg-3">
-            <form class="form-signin">
-              <input
-                id="startData"
-                type="text"
-                class="form-control top"
-                placeholder="Start Nodes (separated by spaces)"
-                name="start"
-                required
-                autofocus
-                autocomplete="off"
-              />
+        <svg id="svgID" width="800" height="400"></svg>
 
-              <input
-                id="endData"
-                type="text"
-                class="form-control bottom"
-                placeholder="End Nodes (separated by spaces)"
-                name="end"
-                required
-                autocomplete="off"
-              />
-              <div class="result" id="result"></div>
-            </form>
-          </div>
+        <form>
+            <div class="row">
+                <div class="col-lg-3">
+                    <form class="form-signin">
+                        <input id="startData" type="text" class="form-control top" placeholder="Start Nodes (separated by spaces)" name="start" required autofocus autocomplete="off" />
 
-          <div class="col-lg-7">
-            <div class="form-group">
-              <textarea
-                id="textAreaID"
-                type="text"
-                rows="10"
-                name="content"
-                class="form-control"
-                autocomplete="off"
-                placeholder="Every line should contain two strings (source and target) and an integer (capacity) all separated by space.
+                        <input id="endData" type="text" class="form-control bottom" placeholder="End Nodes (separated by spaces)" name="end" required autocomplete="off" />
+                        <div class="result" id="result"></div>
+                    </form>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="form-group">
+                        <textarea id="textAreaID" type="text" rows="10" name="content" class="form-control" autocomplete="off" placeholder="Every line should contain two strings (source and target) and an integer (capacity) all separated by space.
 Pumpkin FAF 203
 FCIM Pumpkin 69
 These two lines will create two edges with the flow:
 FCIM -69-> Pimpkin -203-> FAF.
-Please don't create disconnected graphs, for your own good."
-              ></textarea>
-            </div>
-          </div>
-          <div class="col-lg-2">
-            <button class="btn btn-warning" type="button" id="addEdgesBtn">
+Please don't create disconnected graphs, for your own good."></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-warning" type="button" id="addEdgesBtn">
               Add Edges
             </button>
-            <br />
-            <br />
-            <div>
-              <input type="file" id="input-file" />
-            </div>
-            <br />
-            <button class="btn btn-danger" type="button" id="deleteGraphBtn">
+                    <br />
+                    <br />
+                    <div>
+                        <input type="file" id="input-file" />
+                    </div>
+                    <br />
+                    <button class="btn btn-danger" type="button" id="deleteGraphBtn">
               Delete Graph
             </button>
-          </div>
-        </div>
-      </form>
+                </div>
+            </div>
+        </form>
     </section>
 
     <footer id="footer">
-      <p>© Copyright 2021 FAF-203</p>
+        <p>© Copyright 2021 FAF-203</p>
     </footer>
 
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
-      integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="js/maxFlow.js"></script>
     <script src="js/minTree.js"></script>
     <script src="js/index.js"></script>
     <script src="js/shortestPath.js"></script>
-  </body>
+</body>
+
 </html>
