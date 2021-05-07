@@ -1,0 +1,12 @@
+a b 73
+a c 54
+s a 69
+c b 12
+s c 21
+c e 105
+b e 34
+b t 23
+e t 42
+g t 78
+b g 31
+a g 5
