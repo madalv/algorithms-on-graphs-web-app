@@ -3,12 +3,12 @@ body {
   font-family: "Roboto";
   text-align: left;
   line-height: 2;
-  background-color: #191919;
+  background-color: #000000;
   color: #fff;
 }
 
 section {
-  padding: 5% 10% 0;
+  padding: 2% 7% 0;
 }
 
 .btn {
@@ -21,6 +21,7 @@ h1 {
   font-family: "Montserrat";
   font-weight: 700;
   text-align: center;
+  color: #ffb546;
 }
 img {
   display: block;
@@ -39,6 +40,7 @@ img {
   font-size: x-large;
   font-weight: 500;
   text-align: center;
+  color: #ffb546;
 }
 
 /* Footer Section */
@@ -71,4 +73,40 @@ img {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+/*Tabs + tab buttons + drop down menu*/ 
+.nav{
+  background-color: #FFC107;
+  border-radius: 5px;
+}
+.nav-item{
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: black;
+  
+  font-weight: 600;
+  text-align: center;
+}
+.nav-item:hover{
+  background-color: #daa402;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.dropdown-menu{
+  background-color: rgb(243, 231, 166);
+  width: 100%;
+  text-align: left;
+  
+  position: relative;
+ 
+}
+
+.dropdown-item:hover{
+  background-color: rgb(235, 204, 122);
+}
+
+a.nav-link{
+  color: black;
 }

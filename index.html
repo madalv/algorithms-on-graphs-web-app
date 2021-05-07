@@ -27,15 +27,41 @@
   <body>
     <section>
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-2">
           <img src="images/faf.png" height="72px" />
         </div>
-        <div class="col-lg-6">
+        <div class="col-md-3">
           <h1>Graph Algorithms</h1>
+        </div>
+        <div class="col-lg-7">
+          <ul class="nav nav-fill">
+            <li  class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown">Algorithms on Directed Graphs</a>
+              <div class="dropdown-menu">
+                <button id="maxFlowBtn" class="dropdown-item "> Max Flow </button>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown">Algorithms on Undirected Graphs</a>
+              <div class="dropdown-menu">
+                <button id="shortPathBtn" class="dropdown-item "> Shortest Path </button>
+                <button id="minTreeBtn" class="dropdown-item "> Minimum Spanning Tree </button>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link">Custom Colors</a>
+            </li>
+            <li class="nav-item ">
+              <a href="" class="nav-link">How to Use</a>
+            </li>
+          </ul>
+          </div>
         </div>
       </div>
 
-      <svg id="svgID" width="1000" height="600"></svg>
+    
+
+      <svg id="svgID" width="800" height="400"></svg>
 
       <form>
         <div class="row">
@@ -61,31 +87,7 @@
                 required
                 autocomplete="off"
               />
-
-              <button
-                id="maxFlowBtn"
-                class="btn btn-lg btn-warning btn-block"
-                type="button"
-              >
-                Maximum Flow
-              </button>
-
-              <button
-                id="shortPathBtn"
-                class="btn btn-lg btn-warning btn-block"
-                type="button"
-              >
-                Shortest Path
-              </button>
-
-              <button
-                id="minTreeBtn"
-                class="btn btn-lg btn-warning btn-block"
-                type="button"
-              >
-                Minimum Spanning Tree
-              </button>
-              <div id="result"></div>
+              <div class="result" id="result"></div>
             </form>
           </div>
 
