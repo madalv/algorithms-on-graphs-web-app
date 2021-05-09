@@ -454,7 +454,8 @@ function graphInit(algo) {
       } else {
         return 2;
       }
-    });
+    })
+    .classed("fixed", (d) => d.fx !== undefined);
 
   node.append("title").text((d) => {
     return d.name;
@@ -474,6 +475,10 @@ function graphInit(algo) {
     })
     .attr("fill", "white");
 
+  // ensures that the graph is draggable & sticky
+  var drag = d3.drag().on("start", dragstart).on("drag", dragged);
+  node.call(drag).on("click", click);
+
   /*   A note about ticked:
         To be honest I don't fully understand it myself :D
         But, the basics of it is that it's needed for the graph to
@@ -489,8 +494,8 @@ function graphInit(algo) {
         are updated using M and L commands + link coordinates. Whew.
         */
 
+  // tick ensured graph is updated
   simulation.nodes(d3nodes).on("tick", ticked);
-
   simulation.force("link").links(d3links);
 
   function ticked() {
@@ -523,8 +528,29 @@ function graphInit(algo) {
     }
     node.attr("transform", (d) => "translate(" + d.x + ", " + d.y + ")");
   }
-}
+  // when you click on node, it's bouncy again
+  function click(event, d) {
+    delete d.fx;
+    delete d.fy;
+    d3.select(this).classed("fixed", false);
+    simulation.alpha(1).restart();
+  }
+  // idk, ensures the graph is draggable
+  function dragstart() {
+    d3.select(this).classed("fixed", true);
+  }
 
+  // idk, ensures the graph is draggable
+  function dragged(event, d) {
+    d.fx = clamp(event.x, 0, width);
+    d.fy = clamp(event.y, 0, height);
+    simulation.alpha(1).restart();
+  }
+}
+// I have no fucking clue what this does, but it helps make the graph sticky
+function clamp(x, lo, hi) {
+  return x < lo ? lo : x > hi ? hi : x;
+}
 // The firs graph render
 graphInit(1);
 
