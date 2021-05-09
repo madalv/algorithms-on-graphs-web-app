@@ -1,13 +1,15 @@
+// Notes: algo = 1 for maxflow, 2 for shortest path, 3 for minspan tree, 4 for strongly connected comps
+
 ///////////////    Our Graph    ////////////////
 
 // Graph Nodes
 let nodes = [
-    { name: "s" },
-    { name: "t" },
-    { name: "a" },
-    { name: "b" },
-    { name: "c" },
-    { name: "d" },
+    { name: "s", group: "" },
+    { name: "t", group: "" },
+    { name: "a", group: "" },
+    { name: "b", group: "" },
+    { name: "c", group: "" },
+    { name: "d", group: "" },
 ];
 
 // Graph Links/Eadges
@@ -23,6 +25,8 @@ let links = [
     { source: 5, target: 1, capacity: 10, flow: 0 },
 ];
 
+
+//////////////////   Some Variables    ////////////////////
 let NumberOfRealLinks = links.length;
 let NumberOfRealNodes = nodes.length;
 
@@ -30,12 +34,11 @@ let NumberOfRealNodes = nodes.length;
 let s = [];
 let t = [];
 
-
-
-//////////////////    Text area / Editor input    ////////////////////
-
 //colors from text areas, at first default
-let nodeColor, linkColor;
+let nodeColor, linkColor, checkBox;
+
+var result = document.getElementById("result");
+//////////////////    Text area / Editor input    ////////////////////
 
 // Adds start end nodes from DOM
 function addStartEndNodes() {
@@ -108,6 +111,9 @@ function getText() {
     }
 }
 
+//////////////////    Functions     ////////////////////
+
+//clears links of colors aka sets flow to 0
 function clearColorLinks() {
     for (let i = 0; i < links.length; i++) {
         links[i].flow = 0;
@@ -124,9 +130,16 @@ function removeFakeLinksNodes() {
         nodes.pop();
     }
 }
-/////////////////   Buttons functionality    ///////////////////
 
-var result = document.getElementById("result");
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+/////////////////   Buttons functionality    ///////////////////
 
 // Max Flow Button
 document.getElementById("maxFlowBtn").onclick = function() {
@@ -162,6 +175,14 @@ document.getElementById("minTreeBtn").onclick = function() {
     graphRemove();
     graphInit(3);
 };
+
+document.getElementById("sccBtn").onclick = function() {
+    clearColorLinks();
+    kosaraju(links);
+    result.innerHTML = "The graph has " + components.length + " component(s)";
+    graphRemove();
+    graphInit(4);
+}
 
 // Add Edge Button
 document.getElementById("addEdgesBtn").onclick = function() {
@@ -205,7 +226,6 @@ $(document).ready(function() {
 });
 
 
-
 /////////////////////////    D3.js    ////////////////////////////
 
 // Credit to Vlada for the big comments on D3.js
@@ -229,6 +249,19 @@ function graphInit(algo) {
     nodeColor = document.getElementById("inputNodeColor").value;
     linkColor = document.getElementById("inputLinkColor").value;
 
+    let SCC_colors = [];
+
+    if (algo === 4) {
+        for (let i = 0; i < components.length + 1; i++)
+            SCC_colors[i] = getRandomColor();
+    }
+
+
+
+
+    // checks out if the checkbox is checked
+    checkBox = document.getElementById("arcLinkcheck");
+
     d3links = JSON.parse(JSON.stringify(links));
     d3nodes = JSON.parse(JSON.stringify(nodes));
 
@@ -245,7 +278,6 @@ function graphInit(algo) {
         width = swidth * 0.8,
         height = d3nodes.length * 100,
         node,
-        link,
         edgepaths,
         edgelabels;
 
@@ -264,7 +296,7 @@ function graphInit(algo) {
         .append("svg:path")
         .attr("d", "M 0,-5 L 10 ,0 L 0,5")
         .attr("fill", "#999")
-        .attr("fill-opacity", "0.8")
+        .attr("fill-opacity", "0.9")
         .style("stroke", "none");
 
     /* A note about forces:
@@ -280,23 +312,6 @@ function graphInit(algo) {
         .force("charge", d3.forceManyBody().strength(-2500))
         .force("center", d3.forceCenter(width / 2, height / 2));
 
-    link = svg
-        .selectAll(".link")
-        .data(d3links)
-        .enter()
-        .append("line")
-        .attr("stroke-width", 5)
-        .attr("stroke", function(d) {
-            if (d.capacity === INF && algo === 1) return "lime";
-            if (d.flow > 0) return linkColor;
-            else return "lightgray";
-        })
-        .attr("stroke-opacity", "0.5")
-        .attr("class", "link")
-        .attr("marker-end", function() {
-            if (algo === 1) return "url(#arrowhead)";
-            else return " ";
-        });
 
     /* 
     A note about edgepaths & edgelabels:
@@ -318,9 +333,29 @@ function graphInit(algo) {
         .append("path")
         .attr("class", "edgepath")
         .attr("fill-opacity", 0)
-        .attr("stroke-opacity", 0)
         .attr("id", (d, i) => "edgepath" + i)
-        .style("pointer-events", "none");
+        .style("pointer-events", "none")
+        .attr("d", "M0,-5L10,0L0,5")
+        .attr("stroke-width", 4)
+        .attr("stroke", function(d) {
+            if (d.capacity === INF && algo === 1) return "lime";
+
+            if (algo === 4) {
+                let f = d.flow;
+                let c = SCC_colors[f];
+                if (f) return SCC_colors[f];
+                else return "lightgray";
+            }
+            if (d.flow > 0 && (algo === 2 || algo === 3 ||algo ===1)) return linkColor;
+            else return "lightgray";
+        })
+        .attr("stroke-opacity", "0.5")
+        .attr("class", "link")
+        .attr("marker-end", function() {
+            if (algo === 1 || algo === 4) return "url(#arrowhead)";
+            else return " ";
+        });;
+
 
     edgelabels = svg
         .selectAll(".edgelabel")
@@ -341,7 +376,7 @@ function graphInit(algo) {
         .style("pointer-events", "none")
         .attr("startOffset", "50%")
         .text(function(d) {
-            if (algo === 3 || algo === 2) return d.capacity;
+            if (algo === 3 || algo === 2 || algo === 4) return d.capacity;
             if (d.capacity === INF) {
                 return d.flow + " / INF";
             }
@@ -351,6 +386,8 @@ function graphInit(algo) {
                 return 0 + " / " + d.capacity;
             }
         });
+
+    // REMOVED LINKS -- I've realized they're useless. like someone else I know :|
 
     node = svg
         .selectAll(".node")
@@ -368,7 +405,18 @@ function graphInit(algo) {
                 return 7;
             }
         })
-        .style("fill", (d, i) => { if (+nodeColor >= 0 && +nodeColor < 5) return colors[nodeColor](i); return nodeColor; })
+        .style("fill", (d, i) => {
+
+            if (algo === 4) {
+                let g = d.group;
+                let cc = SCC_colors[g];
+                return cc;
+            }
+            if (+nodeColor >= 0 && +nodeColor < 5)
+                return colors[nodeColor](i);
+
+            return nodeColor;
+        })
         .attr("stroke", (d) => {
             if (d.name === "fakeS" || d.name === "fakeT") {
                 return "lime";
@@ -403,37 +451,42 @@ function graphInit(algo) {
         .attr("fill", "white");
 
     /* A note about ticked:
-    To be honest I don't fully understand it myself :D
-    But, the basics of it is that it's needed for the graph to
-    set the right positions and maintain said positions for 
-    the nodes, links and paths. Because the nodes in this case are
-    represented by a group, their position is updated with the
-    transform attribute (read about SVG groups and transform!).
-  
-    The links, because they are only lines(read about SVG lines!)
-    are updated by changing their initial and finishing x,y coord.
-  
-    And paths, because they are paths (read about D3 paths!)
-    are updated using M and L commands + link coordinates. Whew.
-    */
+        To be honest I don't fully understand it myself :D
+        But, the basics of it is that it's needed for the graph to
+        set the right positions and maintain said positions for 
+        the nodes, links and paths. Because the nodes in this case are
+        represented by a group, their position is updated with the
+        transform attribute (read about SVG groups and transform!).
+      
+        The links, because they are only lines(read about SVG lines!)
+        are updated by changing their initial and finishing x,y coord.
+      
+        And paths, because they are paths (read about D3 paths!)
+        are updated using M and L commands + link coordinates. Whew.
+        */
 
     simulation.nodes(d3nodes).on("tick", ticked);
 
     simulation.force("link").links(d3links);
 
     function ticked() {
-        link
-            .attr("x1", (d) => d.source.x)
-            .attr("y1", (d) => d.source.y)
-            .attr("x2", (d) => d.target.x)
-            .attr("y2", (d) => d.target.y);
 
+        if (checkBox.checked == true) {
+            edgepaths.attr("d", function(d) {
+                var dx = d.target.x - d.source.x,
+                    dy = d.target.y - d.source.y,
+                    dr = Math.sqrt(dx * dx + dy * dy);
+                return ("M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " +
+                    d.target.x + "," + d.target.y);
+
+            });
+        } else {
+            edgepaths.attr(
+                "d",
+                (d) => `M ${d.source.x} ${d.source.y} L ${d.target.x} ${d.target.y}`
+            );
+        }
         node.attr("transform", (d) => "translate(" + d.x + ", " + d.y + ")");
-
-        edgepaths.attr(
-            "d",
-            (d) => `M ${d.source.x} ${d.source.y} L ${d.target.x} ${d.target.y}`
-        );
     }
 }
 

@@ -1,5 +1,5 @@
-function searchLinks(links, start, end, nrOfLinks) {
-    for (let i = 0; i < nrOfLinks; i++) {
+function searchLinks(links, start, end) {
+    for (let i = 0; i < NumberOfRealLinks; i++) {
         if (
             (links[i].source === start && links[i].target === end) ||
             (links[i].source === end && links[i].target === start)
@@ -55,7 +55,7 @@ function Dijkstra(links, nodes, s, t) {
         tempNodeList[minNode].state = 2;
 
         for (let i = 0; i < nrOfNodes; i++) {
-            currWeight = searchLinks(links, i, minNode, nrOfLinks).capacity;
+            currWeight = searchLinks(links, i, minNode).capacity;
 
             if (currWeight != -5 && tempNodeList[i].state != 2) {
                 if (tempNodeList[i].dist > tempNodeList[minNode].dist + currWeight) {
@@ -76,7 +76,7 @@ function Dijkstra(links, nodes, s, t) {
     while (tempNode != source) {
         start = tempNode;
         end = nodePath[tempNode];
-        searchLinks(links, start, end, nrOfLinks).flow = 1;
+        searchLinks(links, start, end).flow = 1;
         tempNode = end;
     }
 

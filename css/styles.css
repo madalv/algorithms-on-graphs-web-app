@@ -46,6 +46,13 @@ img {
     font-weight: 500;
     text-align: center;
     color: #ffb546;
+    border: #ffb546 1px dashed;
+    height: 150px;
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 100%;
 }
 
 

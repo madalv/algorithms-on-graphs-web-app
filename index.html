@@ -29,18 +29,19 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown">Algorithms on Directed Graphs</a>
                         <div class="dropdown-menu">
-                            <button id="maxFlowBtn" class="dropdown-item "> Max Flow </button>
-                        </div>
+                            <button id="maxFlowBtn" class="dropdown-item" data-toggle="tooltip" title="Don't forget to add start & end nodes!"> Max Flow </button>
+                            <button id="sccBtn" class="dropdown-item">Strongly Connected Components</button>
+                            </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown">Algorithms on Undirected Graphs</a>
                         <div class="dropdown-menu">
-                            <button id="shortPathBtn" class="dropdown-item "> Shortest Path </button>
+                            <button id="shortPathBtn" class="dropdown-item" data-toggle="tooltip" title="Don't forget to add a start & end node!"> Shortest Path </button>
                             <button id="minTreeBtn" class="dropdown-item "> Minimum Spanning Tree </button>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">Colors</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">Custom</a>
                         <div class="dropdown-menu row">
                             <ul class="list-unstyled col-12">
                                 <li data-toggle="tooltip" title="Type your favorite color or a hex code!">Custom Link Color:</li>
@@ -48,17 +49,20 @@
                             </ul>
                             <div class="dropdown-divider"></div>
                             <ul class="list-unstyled col-12">
-                                <li data-toggle="tooltip" title="Type your favorite color or hex code! Pss, try putting a number from 0 to 4 and see what happens!">Custom Node Color:</li>
+                                <li data-toggle="tooltip" title="Type your favorite color or hex code! The numbers 0-4 represent a color scheme.">Custom Node Color:</li>
                                 <textarea id="inputNodeColor" rows="1" cols="15">0</textarea>
                             </ul>
-                        </div>
+                            <div class="dropdown-divider"></div>
+                            <input class="col-3" type="checkbox" id="arcLinkcheck" data-toggle="tooltip" title="Check for some thick, curvy links ;)"> Arc links?</div>
+
+
                     </li>
                     <li class="nav-item ">
                         <a href="https://github.com/madalv/algorithms-on-graphs-web-app/blob/main/README.md" class="nav-link">Help</a>
                     </li>
                 </ul>
+                </div>
             </div>
-        </div>
         </div>
 
 
@@ -72,7 +76,7 @@
                         <input id="startData" type="text" class="form-control top" placeholder="Start Nodes (separated by spaces)" name="start" required autofocus autocomplete="off" />
 
                         <input id="endData" type="text" class="form-control bottom" placeholder="End Nodes (separated by spaces)" name="end" required autocomplete="off" />
-                        <div class="result" id="result"></div>
+                        <div id="result"></div>
                     </form>
                 </div>
 
@@ -82,7 +86,7 @@
 Pumpkin FAF 203
 FCIM Pumpkin 69
 These two lines will create two edges with the flow:
-FCIM -69-> Pimpkin -203-> FAF.
+FCIM -69-> Pumpkin -203-> FAF.
 Please don't create disconnected graphs, for your own good."></textarea>
                     </div>
                 </div>
@@ -116,6 +120,7 @@ Please don't create disconnected graphs, for your own good."></textarea>
     <script src="js/minTree.js"></script>
     <script src="js/index.js"></script>
     <script src="js/shortestPath.js"></script>
+    <script src="js/stronglyConComps.js"></script>
 </body>
 
 </html>
