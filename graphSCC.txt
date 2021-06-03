@@ -1,0 +1,50 @@
+a b 4
+b c 5
+c a 6
+c d 7
+d e 8
+e f 9
+f g 10
+g h 11
+g e 12
+e h 13
+
+b a 5
+a c 6
+c a 5
+d b 8
+a d 7
+c d 8
+d e 12
+e f 4
+f e 7
+g f 9
+e g 10
+
+a b 5
+a c 6
+b d 7
+d c 8
+c b 9
+
+a b 5
+b e 6
+e a 9
+e f 23
+b f 5
+f g 34
+g f 34
+h g 6
+b c 4
+c g 12
+h d 6
+d h 6
+c d 4
+d c 4
+
+
+
+
+
+
+

@@ -1,15 +1,16 @@
-/* Notes: algo = 1 for maxflow, 2 for shortest path, 3 for minspan tree, 4 for strongly connected comps*/
+/* Notes: algo = 1 for maxflow, 2 for shortest path, 3 for minspan tree, 4 for strongly connected comps
+5 for greedy graph coloring*/
 
 ///////////////    Our Graph    ////////////////
 
 // Graph Nodes
 let nodes = [
-  { name: "s", group: "" },
-  { name: "t", group: "" },
-  { name: "a", group: "" },
-  { name: "b", group: "" },
-  { name: "c", group: "" },
-  { name: "d", group: "" },
+  { name: "s", group: -5 },
+  { name: "t", group: -5 },
+  { name: "a", group: -5 },
+  { name: "b", group: -5 },
+  { name: "c", group: -5 },
+  { name: "d", group: -5 },
 ];
 
 // Graph Links/Eadges
@@ -124,6 +125,12 @@ function clearColorLinks() {
   }
 }
 
+function clearColorNodes() {
+  for (let i = 0; i < nodes.length; i++) {
+    nodes[i].group = -5;
+  }
+}
+
 // Removes fake link nodes
 function removeFakeLinksNodes() {
   let excessLinks = links.length - NumberOfRealLinks;
@@ -196,10 +203,20 @@ document.getElementById("minTreeBtn").onclick = function () {
   graphInit(3);
 };
 
+// Graph coloring button
+document.getElementById("graphColoring").onclick = function () {
+  clearColorNodes();
+  clearColorLinks();
+  result.innerHTML = "Chromatic number is " + graphColoring(links, nodes);
+  graphRemove();
+  graphInit(5);
+};
+
 document.getElementById("sccBtn").onclick = function () {
   clearColorLinks();
+  clearColorNodes();
   kosaraju(links);
-  result.innerHTML = "The graph has " + components.length + " component(s)";
+  result.innerHTML = "The graph has " + components.length + " SC component(s)";
   graphRemove();
   graphInit(4);
 };
@@ -271,8 +288,8 @@ function graphInit(algo) {
   let SCC_colors = [];
 
   // generating random colors for SCCs
-  if (algo === 4) {
-    for (let i = 0; i < components.length + 1; i++)
+  if (algo === 4 || algo === 5) {
+    for (let i = 0; i < NumberOfRealNodes + 1; i++)
       SCC_colors[i] = getRandomColor();
   }
 
@@ -401,7 +418,8 @@ function graphInit(algo) {
     .style("pointer-events", "none")
     .attr("startOffset", "50%")
     .text(function (d) {
-      if (algo === 3 || algo === 2 || algo === 4) return d.capacity;
+      if (algo === 3 || algo === 2 || algo === 4 || algo === 5)
+        return d.capacity;
       if (d.capacity === INF) {
         return d.flow + " / INF";
       }
@@ -424,7 +442,7 @@ function graphInit(algo) {
   node
     .append("circle")
     .attr("r", (d) => {
-      if (d.name === "fakeS" || d.name === "fakeT") {
+      if (d.name === "fakeS" || d.name === "fakeT" || algo === 5) {
         return 9;
       } else {
         return 7;
@@ -432,7 +450,7 @@ function graphInit(algo) {
     })
     // if it's for Kosaraju algorithm (4), fill each node according to group. else if user has typed custom color/scheme, color them that
     .style("fill", (d, i) => {
-      if (algo === 4) {
+      if (algo === 4 || algo === 5) {
         let g = d.group;
         let cc = SCC_colors[g];
         return cc;
