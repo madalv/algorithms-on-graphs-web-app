@@ -13,14 +13,13 @@ function dfs_init(i, visited, stack, adjList) {
 }
 
 // classic dfs, only pushed nodes into components array
-function dfs_scc(i, visited, revAdjList) {
+function dfs_scc(i, visited, AdjList) {
   visited[i] = true;
 
   components[components.length - 1].push(i);
 
-  for (let j = 0; j < revAdjList[i].length; j++) {
-    if (!visited[revAdjList[i][j]])
-      dfs_scc(revAdjList[i][j], visited, revAdjList);
+  for (let j = 0; j < AdjList[i].length; j++) {
+    if (!visited[AdjList[i][j]]) dfs_scc(AdjList[i][j], visited, AdjList);
   }
 }
 

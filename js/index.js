@@ -187,12 +187,27 @@ document.getElementById("shortPathBtn").onclick = function () {
   addStartEndNodes();
   clearColorLinks();
   if (s.length != 0 && t.length != 0) {
-    result.innerHTML = "Shortest path is " + Dijkstra(links, nodes, s, t);
+    result.innerHTML =
+      "Shortest path is " + Dijkstra(links, nodes, s, t, true).distance;
   } else {
     alert("Add valid start and end nodes.");
   }
   graphRemove();
   graphInit(2);
+};
+
+//Shortest Path Button
+document.getElementById("shortPathDirBtn").onclick = function () {
+  addStartEndNodes();
+  clearColorLinks();
+  if (s.length != 0 && t.length != 0) {
+    result.innerHTML =
+      "Shortest path is " + Dijkstra(links, nodes, s, t, false).distance;
+  } else {
+    alert("Add valid start and end nodes.");
+  }
+  graphRemove();
+  graphInit(6);
 };
 
 // Min Tree Button
@@ -385,7 +400,7 @@ function graphInit(algo) {
         if (f) return SCC_colors[f];
         else return "lightgray";
       }
-      if (d.flow > 0 && (algo === 2 || algo === 3 || algo === 1))
+      if (d.flow > 0 && (algo === 2 || algo === 3 || algo === 1 || algo === 6))
         // if we're talking MinSpan, FF, or Dijkstra, color them if they're "active" -- aka have non-zero flow
         return linkColor;
       else return "lightgray";
@@ -393,7 +408,7 @@ function graphInit(algo) {
     .attr("stroke-opacity", "0.5")
     .attr("class", "link")
     .attr("marker-end", function () {
-      if (algo === 1 || algo === 4) return "url(#arrowhead)";
+      if (algo === 1 || algo === 4 || algo === 6) return "url(#arrowhead)";
       // if it's an algo for dir graphs, show arrow head
       else return " ";
     });
@@ -418,7 +433,7 @@ function graphInit(algo) {
     .style("pointer-events", "none")
     .attr("startOffset", "50%")
     .text(function (d) {
-      if (algo === 3 || algo === 2 || algo === 4 || algo === 5)
+      if (algo === 3 || algo === 2 || algo === 4 || algo === 5 || algo === 6)
         return d.capacity;
       if (d.capacity === INF) {
         return d.flow + " / INF";

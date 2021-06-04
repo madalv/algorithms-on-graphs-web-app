@@ -10,27 +10,32 @@ function searchLinks(links, start, end) {
   return { source: -5, target: -5, capacity: -5, flow: -5 };
 }
 
-function Dijkstra(links, nodes, s, t) {
+function searchLinksDirected(links, start, end) {
+  for (let i = 0; i < NumberOfRealLinks; i++) {
+    if (links[i].source === start && links[i].target === end) {
+      return links[i];
+    }
+  }
+  return { source: -5, target: -5, capacity: -5, flow: -5 };
+}
+
+function Dijkstra(links, nodes, s, t, undirected) {
   var nrOfNodes = nodes.length;
-  var nrOfLinks = links.length;
 
   //initialization
 
   const infSum = Number.MAX_SAFE_INTEGER;
-  var tempNodeList = [];
   var nodePath = Array(nrOfNodes).fill(-1);
+  var distances = Array(nrOfNodes).fill(infSum);
+  var states = Array(nrOfNodes).fill(0);
 
   var source = s[0];
   var target = t[0];
 
   var currWeight;
 
-  for (let i = 0; i < nrOfNodes; i++) {
-    tempNodeList.push({ dist: infSum, state: 0 });
-  }
-
-  tempNodeList[source].state = 1;
-  tempNodeList[source].dist = 0;
+  states[source] = 1;
+  distances[source] = 0;
 
   var notFin = true;
   var minDist = infSum,
@@ -41,9 +46,9 @@ function Dijkstra(links, nodes, s, t) {
     minDist = infSum;
 
     for (let i = 0; i < nrOfNodes; i++) {
-      if (tempNodeList[i].state === 1) {
-        if (tempNodeList[i].dist < minDist) {
-          minDist = tempNodeList[i].dist;
+      if (states[i] === 1) {
+        if (distances[i] < minDist) {
+          minDist = distances[i];
           minNode = i;
           notFin = true;
         }
@@ -52,17 +57,18 @@ function Dijkstra(links, nodes, s, t) {
 
     if (!notFin) break;
 
-    tempNodeList[minNode].state = 2;
+    states[minNode] = 2;
 
     for (let i = 0; i < nrOfNodes; i++) {
-      currWeight = searchLinks(links, i, minNode).capacity;
+      if (undirected) currWeight = searchLinks(links, i, minNode).capacity;
+      else currWeight = searchLinksDirected(links, minNode, i).capacity;
 
-      if (currWeight != -5 && tempNodeList[i].state != 2) {
-        if (tempNodeList[i].dist > tempNodeList[minNode].dist + currWeight) {
-          tempNodeList[i].dist = tempNodeList[minNode].dist + currWeight;
+      if (currWeight != -5 && states[i] != 2) {
+        if (distances[i] > distances[minNode] + currWeight) {
+          distances[i] = distances[minNode] + currWeight;
           nodePath[i] = minNode;
         }
-        tempNodeList[i].state = 1;
+        states[i] = 1;
       }
     }
   }
@@ -73,12 +79,26 @@ function Dijkstra(links, nodes, s, t) {
     start,
     end;
 
+  if (nodePath[target] === -1) return { distance: 0, array: distances };
+
   while (tempNode != source) {
     start = tempNode;
     end = nodePath[tempNode];
-    searchLinks(links, start, end).flow = 1;
+
+    if (!undirected) {
+      // ughhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh kill meeeeeeeeeeeeee
+      searchLinksDirected(links, end, start).flow = 1;
+    } else {
+      let w1 = searchLinksDirected(links, start, end).capacity;
+      let w2 = searchLinksDirected(links, end, start).capacity;
+
+      if (w2 === -5) searchLinksDirected(links, start, end).flow = 1;
+      else if (w1 === -5) searchLinksDirected(links, end, start).flow = 1;
+      else if (w1 < w2) searchLinksDirected(links, start, end).flow = 1;
+      else searchLinksDirected(links, end, start).flow = 1;
+    }
     tempNode = end;
   }
 
-  return tempNodeList[target].dist;
+  return { distance: distances[target], array: distances };
 }

@@ -1,3 +1,6 @@
+// Note: since this coloring algorithm is greedy
+// it might not always give the optimal solution
+
 function graphColoring(links, nodes) {
   adjList = [];
 
