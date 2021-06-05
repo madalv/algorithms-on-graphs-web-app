@@ -1,16 +1,16 @@
 /* Notes: algo = 1 for maxflow, 2 for shortest path, 3 for minspan tree, 4 for strongly connected comps
-5 for greedy graph coloring*/
+5 for greedy graph coloring, 6 for dir short path, 7 for center, 8 for median*/
 
 ///////////////    Our Graph    ////////////////
 
 // Graph Nodes
 let nodes = [
-  { name: "0", group: -5 },
-  { name: "1", group: -5 },
-  { name: "2", group: -5 },
-  { name: "3", group: -5 },
-  { name: "4", group: -5 },
-  { name: "5", group: -5 },
+  { name: "s", group: -5 },
+  { name: "t", group: -5 },
+  { name: "a", group: -5 },
+  { name: "b", group: -5 },
+  { name: "c", group: -5 },
+  { name: "d", group: -5 },
 ];
 
 // Graph Links/Eadges
@@ -93,7 +93,7 @@ function getNode(name) {
       return i;
     }
   }
-  nodes.push({ name: name });
+  nodes.push({ name: name, group: -5 });
   return nodes.length - 1;
 }
 
@@ -196,7 +196,7 @@ document.getElementById("shortPathBtn").onclick = function () {
   graphInit(2);
 };
 
-//Shortest Path Button
+//Shortest Path DIR Button
 document.getElementById("shortPathDirBtn").onclick = function () {
   addStartEndNodes();
   clearColorLinks();
@@ -222,15 +222,25 @@ document.getElementById("minTreeBtn").onclick = function () {
 document.getElementById("graphMedian").onclick = () => {
   clearColorLinks();
   medians = graphMedian(links, nodes);
-  result.innerHTML = medians.length === 1 ? "The Median of the Graph is " + medians[0] : "The Medians of the Graph are: " + medians;
-}
+  result.innerHTML =
+    medians.length === 1
+      ? "The graph median is " + medians[0]
+      : "The graph medians are: " + medians;
+  graphRemove();
+  graphInit(8);
+};
 
 // Graph Center
 document.getElementById("graphCenter").onclick = () => {
   clearColorLinks();
   centers = graphCenter(links, nodes);
-  result.innerHTML = centers.length === 1 ? "The Center of the Graph is " + centers[0] : "The Centers of the Graph are: " + centers;
-}
+  result.innerHTML =
+    centers.length === 1
+      ? "The graph center is " + centers[0]
+      : "The graph centers are: " + centers;
+  graphRemove();
+  graphInit(7);
+};
 
 // Graph coloring button
 document.getElementById("graphColoring").onclick = function () {
@@ -489,6 +499,16 @@ function graphInit(algo) {
       return nodeColor;
     })
     .attr("stroke", (d) => {
+      if (algo === 7) {
+        for (let i = 0; i < centers.length; i++)
+          if (d.name === centers[i]) return "lime";
+      }
+
+      if (algo === 8) {
+        for (let i = 0; i < medians.length; i++)
+          if (d.name === medians[i]) return "lime";
+      }
+
       if (d.name === "fakeS" || d.name === "fakeT") {
         return "lime";
       } else {
@@ -496,6 +516,16 @@ function graphInit(algo) {
       }
     })
     .attr("stroke-width", (d) => {
+      if (algo === 7) {
+        for (let i = 0; i < centers.length; i++)
+          if (d.name === centers[i]) return 4;
+      }
+
+      if (algo === 8) {
+        for (let i = 0; i < medians.length; i++)
+          if (d.name === medians[i]) return 4;
+      }
+
       if (d.name === "fakeS" || d.name === "fakeT") {
         return 3;
       } else {

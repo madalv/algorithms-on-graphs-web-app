@@ -1,4 +1,4 @@
-const maxFunction = array => {
+const maxFunction = (array) => {
   let currentMax = -1;
   for (let i = 0; i < array.length; ++i) {
     if (currentMax < array[i]) {
@@ -6,17 +6,17 @@ const maxFunction = array => {
     }
   }
   return currentMax;
-}
+};
 
 const graphCenter = (links, nodes) => {
   n = nodes.length;
-  dMatrix = []
+  dMatrix = [];
 
-  let myFunc = num => Number(num);
+  let myFunc = (num) => Number(num);
 
   for (let i = 0; i < n; ++i) {
     let intArr = Array.from(String(i), myFunc);
-    dMatrix.push(Dijkstra(links, nodes, intArr, intArr, true).array)
+    dMatrix.push(Dijkstra(links, nodes, intArr, intArr, true).array);
   }
 
   let maxs = [];
@@ -37,9 +37,9 @@ const graphCenter = (links, nodes) => {
 
   for (let i = 0; i < n; ++i) {
     if (maxs[i] === currentMin) {
-      centers.push(i);
+      centers.push(nodes[i].name);
     }
   }
 
   return centers;
-}
+};
