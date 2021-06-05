@@ -5,12 +5,12 @@
 
 // Graph Nodes
 let nodes = [
-  { name: "s", group: -5 },
-  { name: "t", group: -5 },
-  { name: "a", group: -5 },
-  { name: "b", group: -5 },
-  { name: "c", group: -5 },
-  { name: "d", group: -5 },
+  { name: "0", group: -5 },
+  { name: "1", group: -5 },
+  { name: "2", group: -5 },
+  { name: "3", group: -5 },
+  { name: "4", group: -5 },
+  { name: "5", group: -5 },
 ];
 
 // Graph Links/Eadges
@@ -218,6 +218,14 @@ document.getElementById("minTreeBtn").onclick = function () {
   graphInit(3);
 };
 
+// Graph Center <--- Iura's Function
+document.getElementById("graphCenter").onclick = () => {
+  clearColorLinks();
+  centers = graphCenter(links, nodes);
+  result.innerHTML = centers.length === 1 ? "The Center of the Graph is " + centers[0] : "The Centers of the Graph are: " + centers;
+}
+
+
 // Graph coloring button
 document.getElementById("graphColoring").onclick = function () {
   clearColorNodes();
@@ -373,9 +381,9 @@ function graphInit(algo) {
       Now edgelabels are simply a text element which is mapped to the id of an
       edgepath which in this case display the weight of the link (or capacity).
       Most of the attributes are prety self-explanatory, but the
-      "xlink:href" one is what maps the label to the path aka assures that it's 
+      "xlink:href" one is what maps the label to the path aka assures that it's
       in the right place.
-      
+
     *!edit: before the edgepaths were invisible & we used lines as links. now I
     *!realized we could only have edgepaths without links. so now they're vital to the graph
 */
@@ -515,14 +523,14 @@ function graphInit(algo) {
   /*   A note about ticked:
         To be honest I don't fully understand it myself :D
         But, the basics of it is that it's needed for the graph to
-        set the right positions and maintain said positions for 
+        set the right positions and maintain said positions for
         the nodes, links and paths. Because the nodes in this case are
         represented by a group, their position is updated with the
         transform attribute (read about SVG groups and transform!).
-      
+
         The links, because they are only lines(read about SVG lines!)
         are updated by changing their initial and finishing x,y coord.
-      
+
         And paths, because they are paths (read about D3 paths!)
         are updated using M and L commands + link coordinates. Whew.
         */
