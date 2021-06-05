@@ -218,13 +218,19 @@ document.getElementById("minTreeBtn").onclick = function () {
   graphInit(3);
 };
 
-// Graph Center <--- Iura's Function
+// Graph Medians <--- Iura's Function
+document.getElementById("graphMedian").onclick = () => {
+  clearColorLinks();
+  medians = graphMedian(links, nodes);
+  result.innerHTML = medians.length === 1 ? "The Median of the Graph is " + medians[0] : "The Medians of the Graph are: " + medians;
+}
+
+// Graph Center
 document.getElementById("graphCenter").onclick = () => {
   clearColorLinks();
   centers = graphCenter(links, nodes);
   result.innerHTML = centers.length === 1 ? "The Center of the Graph is " + centers[0] : "The Centers of the Graph are: " + centers;
 }
-
 
 // Graph coloring button
 document.getElementById("graphColoring").onclick = function () {

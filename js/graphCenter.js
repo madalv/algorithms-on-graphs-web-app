@@ -1,3 +1,13 @@
+const maxFunction = array => {
+  let currentMax = -1;
+  for (let i = 0; i < array.length; ++i) {
+    if (currentMax < array[i]) {
+      currentMax = array[i];
+    }
+  }
+  return currentMax;
+}
+
 const graphCenter = (links, nodes) => {
   n = nodes.length;
   dMatrix = []
@@ -9,21 +19,25 @@ const graphCenter = (links, nodes) => {
     dMatrix.push(Dijkstra(links, nodes, intArr, intArr, true).array)
   }
 
-  let currentMin = Infinity;
+  let maxs = [];
 
   for (let i = 0; i < n; ++i) {
-    let sum = dMatrix[i].reduce((a, b) => a + b, 0)
-    if (sum < currentMin) {
-      currentMin = sum;
-    }
+    let max = maxFunction(dMatrix[i]);
+    maxs.push(max);
   }
 
   let centers = [];
+  let currentMin = Infinity;
 
   for (let i = 0; i < n; ++i) {
-    let sum = dMatrix[i].reduce((a, b) => a + b, 0)
-    if (sum === currentMin) {
-      centers.push(nodes[i].name);
+    if (maxs[i] <= currentMin) {
+      currentMin = maxs[i];
+    }
+  }
+
+  for (let i = 0; i < n; ++i) {
+    if (maxs[i] === currentMin) {
+      centers.push(i);
     }
   }
 
