@@ -251,6 +251,19 @@ document.getElementById("graphColoring").onclick = function () {
   graphInit(5);
 };
 
+// TSP
+document.getElementById("tsp").onclick = function () {
+  addStartEndNodes();
+  clearColorLinks();
+  if (s.length != 0 && t.length != 0) {
+    result.innerHTML = "Shortest cycle that visits every node is " + TSP(links,s);
+  } else {
+    alert("Add valid start and end nodes.");
+  }
+  graphRemove();
+  graphInit(2);
+};
+
 document.getElementById("sccBtn").onclick = function () {
   clearColorLinks();
   clearColorNodes();
